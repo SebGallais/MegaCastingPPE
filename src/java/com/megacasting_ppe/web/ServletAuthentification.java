@@ -56,7 +56,7 @@ public class ServletAuthentification extends HttpServlet {
             RequestDispatcher rq = request.getRequestDispatcher("index.html");
             rq.forward(request, response);
             session.setAttribute("Connecter", false);
-        }
+        
         }
     }
 
