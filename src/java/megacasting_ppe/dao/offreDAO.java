@@ -73,6 +73,53 @@ public class offreDAO {
         return offre;
     }
 
+    public static Offre trouverParId(long IdentifiantTemp) {
+        Statement stmt = null;
+        Offre offre = null;
+        try {
+
+            stmt = getINSTANCE().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT Identifiant, Libelle, Reference, DateDebutPublication, DateFinPublication`, DateDebutContrat, DateFinContrat, DescriptionPoste, DescriptionProfil, NombresPoste, IdentifiantClient, IdentifiantMetier, IdentifiantContrat  FROM offre WHERE Identifiant = '" + IdentifiantTemp + "'");
+
+            while (rs.next()) {
+
+                long Identifiant = rs.getLong("Identifiant");
+                String Libelle = rs.getString("Libelle");
+                String Reference = rs.getString("Reference");
+                Date DateDebutPublication = rs.getDate("DateDebutPublication");
+                Date DateFinPublication = rs.getDate("DateFinPublication");
+                Date DateDebutContrat = rs.getDate("DateDebutContrat");
+                Date DateFinContrat = rs.getDate("DateFinContrat");
+                String DescriptionPoste = rs.getString("DescriptionPoste");
+                String DescriptionProfil = rs.getString("DescriptionProfil");
+                int NombresPoste = rs.getInt("NombresPoste");
+                long IdentifiantClient = rs.getLong("IdentifiantClient");
+                Client client = clientDAO.trouverparID(IdentifiantClient);
+                long IdentifiantMetier = rs.getLong("IdentifiantMetier");
+                Metier metier = metierDAO.trouverparID(IdentifiantMetier);
+                long IdentifiantContrat = rs.getLong("IdentifiantContrat");
+                Contrat contrat = contratDAO.trouverparID(IdentifiantContrat);
+                
+               
+                offre = new Offre(Libelle, Reference, DateDebutPublication, DateFinPublication, DateDebutContrat, DateFinContrat, client, metier, contrat);
+                offre.setIdentifiant(Identifiant);
+                offre.setDescriptionPoste(DescriptionPoste);
+                offre.setDescriptionProfil(DescriptionProfil);
+                offre.setNbPoste(NombresPoste);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                }
+            }
+        }
+        return offre;
+    }
 
     public static ArrayList<Offre> Lister() {
         ArrayList<Offre> ListOffre = new ArrayList();

@@ -7,21 +7,22 @@ package com.megacasting_ppe.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import megacasting_ppe.classes.Offre;
-import megacasting_ppe.dao.offreDAO;
-import org.json.simple.JSONObject;
+import javax.servlet.http.HttpSession;
+import megacasting_ppe.classes.Compte;
+import megacasting_ppe.dao.compteDAO;
 
 /**
  *
  * @author Seb
  */
-@WebServlet(name = "ServletOffre", urlPatterns = {"/servletoffre"})
-public class ServletOffre extends HttpServlet {
+@WebServlet(name = "ServletAuthentification", urlPatterns = {"/servletauthentification"})
+public class ServletAuthentification extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -34,34 +35,29 @@ public class ServletOffre extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       response.setContentType("application/json");
+          
+        HttpSession session = request.getSession();
+        String pseudonyme = request.getParameter("pseudonyme");
+        String motdepasse = request.getParameter("motdepasse");
+        Compte compte = compteDAO.authentification(pseudonyme, motdepasse);
+        
+        
+        if (compte != null) {
+          
+                
+                session.setAttribute("CompteObject", compte);
+                session.setAttribute("Connecter", true);
+                
+                RequestDispatcher rq = request.getRequestDispatcher("#");
+                rq.forward(request, response);
 
-        long IdOffreTemp = Long.parseLong(request.getParameter("identifiant_offre"));
-        Offre offre = offreDAO.trouverParId(IdOffreTemp);
-        
-        
-        JSONObject object = new JSONObject();
-        
-            object.put("Intitule", offre.getLibelle());
-            object.put("Reference", offre.getReference());
-            object.put("DateDebutPublication", offre.getDateDebutPublication());
-            object.put("DateFinPublication", offre.getDateFinPublication());
-            object.put("DateDebutContrat", offre.getDateDebutContrat());
-            object.put("DateFinContrat", offre.getDateFinContrat());
-            object.put("DescriptionPoste", offre.getDescriptionPoste());
-            object.put("DescriptionProfil", offre.getDescriptionProfil());
-            object.put("NombresPoste", offre.getNbPoste());
-            object.put("NomEntreprise",offre.getClient().getNomEntreprise());
-            object.put("NomResponsable", offre.getClient().getNomResponsable());
-            object.put("PrenomResponsable", offre.getClient().getPrenomResponsable());
-            object.put("CiviliteResponsable", offre.getClient().getCiviliteResponsable());
-            object.put("RueEntreprise",offre.getClient().getRueEntreprise());
-            object.put("CpEntreprise", offre.getClient().getCpEntreprise());
-            object.put("VilleEntreprise", offre.getClient().getVilleEntreprise());
-            object.put("MailEntreprise", offre.getClient().getMailEntreprise());
-            object.put("FaxEntreprise",offre.getClient().getFaxEntreprise());
-            object.put("TelephoneEntreprise",offre.getClient().getTelephoneEntreprise()); 
+        } else {
             
+            RequestDispatcher rq = request.getRequestDispatcher("index.html");
+            rq.forward(request, response);
+            session.setAttribute("Connecter", false);
+        }
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
