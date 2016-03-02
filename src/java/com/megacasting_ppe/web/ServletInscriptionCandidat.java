@@ -53,71 +53,61 @@ public class ServletInscriptionCandidat extends HttpServlet {
         String Permis = request.getParameter("permis_inscription");
         String Pseudonyme = request.getParameter("pseudonyme_inscription");
         String MotDePasse = request.getParameter("motdepasse_inscription");
+        try
+        {
+            
+            SimpleDateFormat typeFormat = new SimpleDateFormat( "dd/MM/yyyy" );
+            java.util.Date UtilDateNaissance = typeFormat.parse(DateNaissanceString);
+            java.sql.Date DateNaissance =  new java.sql.Date(UtilDateNaissance.getTime());
         
-       
-       SimpleDateFormat sdf1 = new SimpleDateFormat("dd-MM-yyyy");
-       java.util.Date DateNaissanceutil = sdf1.parse(DateNaissanceString);
-   java.sql.Date DateNaissance = new Date(DateNaissanceutil.getTime()); 
-        
-        
-        
-   HttpSession session = request.getSession();
+                HttpSession session = request.getSession();
+                boolean Inscription_ok = true;
+                //TEST      
+
+                if (Nom == "" || Prenom == "" || Email == "" || Telephone == "" || Portable == "" || Rue == "" || Ville == "" || DateNaissanceString == "" || Permis == "" || Pseudonyme == "" || MotDePasse == "") {
+                    Inscription_ok = false;
+                }
+                if (Nom == null || Prenom == null || Email == null || Telephone == null || Portable == null || Rue == null || Ville == null || DateNaissanceString == null || Permis == null|| Pseudonyme == null || MotDePasse == null ) {
+                    Inscription_ok = false;
+                }
+
+                if (compteDAO.trouverparPseudonyme(Pseudonyme) != null) {
+                    Inscription_ok = false;
+                }
+
+                if (Inscription_ok == true) {
+                    //declarer aucun message d'erreur
+                    session.setAttribute("ErreurInscriptionCandidat", "false");
+
+
+                    Compte compte = new Compte(Pseudonyme, MotDePasse);
+                    compteDAO.Creer(compte);
+
+                    Candidat candidat = new Candidat(Nom, Prenom, Email, Telephone, Portable, Rue, CodePostal, Ville, DateNaissance, Permis, compte );
+                    candidatDAO.Creer(candidat);
+
+                    //renvoyer a la page de connexion
+                    RequestDispatcher rq = request.getRequestDispatcher("#");
+                    rq.forward(request, response);
+
+                } else {
+                    //Indiquer message d'erreur
+                    session.setAttribute("ErreurInscriptionCandidat", "true");
+
+                    //refresh
+                    RequestDispatcher rq = request.getRequestDispatcher("#");
+                    rq.forward(request, response);
+
+                }
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
+        }
    
-   boolean Inscription_ok = true;
-        //TEST      
-
-        if (Nom == "" || Prenom == "" || Email == "" || Telephone == "" || Portable == "" || Rue == "" || Ville == "" || DateNaissanceString == "" || Permis == "" || Pseudonyme == "" || MotDePasse == "") {
-            Inscription_ok = false;
-        }
-        if (Nom == null || Prenom == null || Email == null || Telephone == null || Portable == null || Rue == null || Ville == null || DateNaissanceString == null || Permis == null|| Pseudonyme == null || MotDePasse == null ) {
-            Inscription_ok = false;
-        }
-
-        if (compteDAO.trouverparPseudonyme(Pseudonyme) != null) {
-            Inscription_ok = false;
-        }
-         
-   if (Inscription_ok == true) {
-            //declarer aucun message d'erreur
-            session.setAttribute("ErreurInscriptionCandidat", "false");
-            
-            
-            Compte compte = new Compte(Pseudonyme, MotDePasse);
-            compteDAO.Creer(compte);
-            
-             Candidat candidat = new Candidat(Nom, Prenom, Email, Telephone, Portable, Rue, CodePostal, Ville, DateNaissance, Permis, compte );
-            candidatDAO.Creer(candidat);
-
-            //renvoyer a la page de connexion
-            RequestDispatcher rq = request.getRequestDispatcher("#");
-            rq.forward(request, response);
-
-        } else {
-            //Indiquer message d'erreur
-            session.setAttribute("ErreurInscriptionCandidat", "true");
-
-            //refresh
-            RequestDispatcher rq = request.getRequestDispatcher("#");
-            rq.forward(request, response);
-
-        }
-
-    }
-      
-
-      
-
-
         
-        
-        
-        
-        
-        
-        
-        
-    }
-
+}
+ 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
