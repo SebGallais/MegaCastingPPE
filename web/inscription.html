@@ -7,13 +7,17 @@
     <title>Megacasting</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
     <link href="style.css" rel="stylesheet">
+
   </head>
   <body>
 
 <div class="container" id="contenuinscription">
             
-            <form action="/users/login" name="login" role="form" class="form-horizontal" method="post" accept-charset="utf-8">
+            <form action="servletinscriptioncandidat" name="login" role="form" class="form-horizontal" method="post" accept-charset="utf-8">
                 
                 <div class="form-group">
                     <div class="col-md-4"></div>
@@ -28,86 +32,104 @@
                  </div> 
                 <div class="form-group">
                     <div class="col-md-4"></div>
-                    <div class="col-md-4"><input name="Nom" placeholder="Nom" class="form-control" type="text" id="UserUsername"/></div>
+                    <div class="col-md-4"><input name="nom_inscription" placeholder="Nom" class="form-control" type="text" /></div>
                     <div class="col-md-4"></div>
                 </div> 
                 
                 
                 <div class="form-group">
                     <div class="col-md-4"></div>
-                    <div class="col-md-4"><input name="Prenom" placeholder="Prenom" class="form-control" type="text" id="UserPassword"/></div>
+                    <div class="col-md-4"><input name="prenom_inscription" placeholder="Prenom" class="form-control" type="text" /></div>
                     <div class="col-md-4"></div>    
                 </div> 
                 
                  <div class="form-group">
                     <div class="col-md-4"></div>
-                    <div class="col-md-4"><input name="Email" placeholder="Email" class="form-control" type="text" id="UserUsername"/></div>
+                    <div class="col-md-4"><input name="email_inscription" placeholder="Email" class="form-control" type="text" /></div>
                     <div class="col-md-4"></div>
                 </div> 
                 
                 
                 <div class="form-group">
                     <div class="col-md-4"></div>
-                    <div class="col-md-4"><input name="Telephone" placeholder="Telephone" class="form-control" type="text" id="UserPassword"/></div>
+                    <div class="col-md-4"><input name="telephone_inscription" placeholder="Telephone" class="form-control" type="text" /></div>
                     <div class="col-md-4"></div>    
                 </div> 
                 
                 <div class="form-group">
                     <div class="col-md-4"></div>
-                    <div class="col-md-4"><input name="Portable" placeholder="Portable" class="form-control" type="text" id="UserUsername"/></div>
+                    <div class="col-md-4"><input name="portable_inscription" placeholder="Portable" class="form-control" type="text" /></div>
                     <div class="col-md-4"></div>
                 </div> 
                 
                 <div class="form-group">
                     <div class="col-md-4"></div>
-                    <div class="col-md-4"><input name="Rue" placeholder="Rue" class="form-control" type="text" id="UserPassword"/></div>
+                    <div class="col-md-4"><input name="rue_inscription" placeholder="Rue" class="form-control" type="text" /></div>
                     <div class="col-md-4"></div>    
                 </div> 
                 
                 <div class="form-group">
                     <div class="col-md-4"></div>
-                    <div class="col-md-4"><input name="CodePostal" placeholder="Code Postal" class="form-control" type="text" id="UserPassword"/></div>
+                    <div class="col-md-4"><input name="codepostal_inscription" placeholder="Code Postal" class="form-control" type="text" /></div>
                     <div class="col-md-4"></div>    
                 </div> 
                 
                  <div class="form-group">
                     <div class="col-md-4"></div>
-                    <div class="col-md-4"><input name="Ville" placeholder="Ville" class="form-control" type="text" id="UserUsername"/></div>
+                    <div class="col-md-4"><input name="ville_inscription" placeholder="Ville" class="form-control" type="text" /></div>
                     <div class="col-md-4"></div>
                 </div> 
                 
+               
                 
                 <div class="form-group">
                     <div class="col-md-4"></div>
-                    <div class="col-md-4"><input name="Telephone" placeholder="Telephone" class="form-control" type="text" id="UserPassword"/></div>
-                    <div class="col-md-4"></div>    
+                    <div class="col-md-4"> <input name="datenaissance_inscription" placeholder="Date de naissance : jj/MM/AAAA" class="form-control" type="text" /></div>
+                    <div class="col-md-4"></div>
                 </div> 
                 
                 <div class="form-group">
                     <div class="col-md-4"></div>
-                    <div class="col-md-4">
-   
+                    <div class="col-md-4"><input name="pseudonyme_inscription" placeholder="Pseudonyme" class="form-control" type="text" /></div>
+                    <div class="col-md-4"></div>
+                </div> 
+                
+               
+                
+                <div class="form-group">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4"> <input name="motdepasse_inscription" placeholder="Mot de passe" class="form-control" type="text" /></div>
+                    <div class="col-md-4"></div>
+                </div> 
+                
+                <div class="form-group">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4"> 
+                        <label class="checkbox-inline">Permis :</label>
+                        <label class="checkbox-inline"><input name="permis_inscription" type="radio" value="oui">Oui</label>
+                        <label class="checkbox-inline"><input name="permis_inscription" type="radio" value="non">Non</label>
+                        
                     </div>
                     <div class="col-md-4"></div>
                 </div> 
                 
                 
-                <div class="form-group">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4"></div>    
-                </div> 
+                
                 
                 
                 <div class="form-group">
                     <div class="col-md-4"></div>
-                <div class="col-md-3"><input  class="btn btn-success" type="submit" value="Connexion"/></div>
+                <div class="col-md-3"><input  class="btn btn-success" type="submit" value="Inscription"/></div>
                 <div class="col-md-5"></div>
                 </div>
             
             </form>
+     
+    
+    
 </div>
     <!--jquery javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="boootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>
