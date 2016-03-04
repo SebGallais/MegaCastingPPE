@@ -120,13 +120,13 @@ public class candidatDAO {
         
     }
        
-    public static Candidat trouverparID(long IdentifiantTemp) {
+    public static Candidat trouverparIDCompte(long IdentifiantTemp) {
         Statement stmt = null;
         Candidat candidat = null;
         try {
 
             stmt = getINSTANCE().createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT Identifiant, Nom, Prenom, Email, Telephone, Portable, Rue, CP, Ville, DateNaissance, Permis, IdentifiantCompte FROM candidat WHERE Identifiant = '" + IdentifiantTemp + "'");
+            ResultSet rs = stmt.executeQuery("SELECT Identifiant, Nom, Prenom, Email, Telephone, Portable, Rue, CP, Ville, DateNaissance, Permis, IdentifiantCompte FROM candidat WHERE IdentifiantCompte = '" + IdentifiantTemp + "'");
 
             while (rs.next()) {
 

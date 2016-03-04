@@ -14,8 +14,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import megacasting_ppe.classes.Candidat;
 import megacasting_ppe.classes.Compte;
+import megacasting_ppe.classes.Diffuseur;
+import megacasting_ppe.dao.candidatDAO;
 import megacasting_ppe.dao.compteDAO;
+import megacasting_ppe.dao.diffuseurDAO;
 
 /**
  *
@@ -39,21 +43,31 @@ public class ServletAuthentification extends HttpServlet {
         HttpSession session = request.getSession();
         String pseudonyme = request.getParameter("pseudonyme");
         String motdepasse = request.getParameter("motdepasse");
+        
+        Boolean candidatOk = false;
         Compte compte = compteDAO.authentification(pseudonyme, motdepasse);
+        Candidat candidat = candidatDAO.trouverparIDCompte(compte.getIdentifiant());
+        
+        if(candidat != null ){
+            candidatOk = true;
+    
+        }
         
         
-        if (compte != null) {
+        
+        
+        if (compte != null && candidatOk == true ) {
           
                 
                 session.setAttribute("CompteObject", compte);
                 session.setAttribute("Connecter", true);
                 
-                RequestDispatcher rq = request.getRequestDispatcher("#");
+                RequestDispatcher rq = request.getRequestDispatcher("index.html");
                 rq.forward(request, response);
 
         } else {
             
-            RequestDispatcher rq = request.getRequestDispatcher("index.html");
+            RequestDispatcher rq = request.getRequestDispatcher("authentification.html");
             rq.forward(request, response);
             session.setAttribute("Connecter", false);
         

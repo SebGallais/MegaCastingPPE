@@ -87,7 +87,7 @@ public class ServletInscriptionCandidat extends HttpServlet {
                     candidatDAO.Creer(candidat);
 
                     //renvoyer a la page de connexion
-                    RequestDispatcher rq = request.getRequestDispatcher("#");
+                    RequestDispatcher rq = request.getRequestDispatcher("authentification.html");
                     rq.forward(request, response);
 
                 } else {
@@ -95,7 +95,7 @@ public class ServletInscriptionCandidat extends HttpServlet {
                     session.setAttribute("ErreurInscriptionCandidat", "true");
 
                     //refresh
-                    RequestDispatcher rq = request.getRequestDispatcher("#");
+                    RequestDispatcher rq = request.getRequestDispatcher("inscription.html");
                     rq.forward(request, response);
 
                 }

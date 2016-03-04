@@ -23,6 +23,11 @@ span.glyphicon-user {
     color:#6699FF
 }
 
+span.glyphicon-search {
+    font-size: 200%;
+    color:#6699FF
+}
+
 #buttonaccesdiff {
     text-align:center;
   
@@ -47,7 +52,7 @@ span.glyphicon-user {
 
 #titreoffre{
     font-family:trebuchet;
-    
+    font-size:x-large;
 }
 
 #contenu{
@@ -75,4 +80,30 @@ span.glyphicon-user {
 .btn-success:active:focus
 {
   background-color: #6699FF;
+}
+
+
+#intituleOffre {
+    font-family:laton,sans-serif;
+    font-size:x-large;
+        
+}
+
+#Descriptionprofil{
+     font-family:laton,sans-serif;
+    font-size:medium;
+
+}
+
+#datepublication{
+    text-align:right;
+    
+    
+}
+
+#titreoffres{
+    text-align:center;
+    
+    
+    
 }
