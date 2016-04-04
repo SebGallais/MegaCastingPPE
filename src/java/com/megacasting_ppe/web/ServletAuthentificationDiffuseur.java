@@ -7,24 +7,24 @@ package com.megacasting_ppe.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import megacasting_ppe.classes.Candidat;
-import megacasting_ppe.classes.Offre;
-import megacasting_ppe.dao.offreDAO;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
+import megacasting_ppe.classes.Compte;
+import megacasting_ppe.classes.Diffuseur;
+import megacasting_ppe.dao.compteDAO;
+import megacasting_ppe.dao.diffuseurDAO;
 
 /**
  *
  * @author Seb
  */
-@WebServlet(name = "ServletOffres", urlPatterns = {"/servletoffres"})
-public class ServletOffres extends HttpServlet {
+@WebServlet(name = "ServletAuthentificationDiffuseur", urlPatterns = {"/servletauthentificationdiffuseur"})
+public class ServletAuthentificationDiffuseur extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -36,62 +36,38 @@ public class ServletOffres extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-       response.setContentType("application/json;  charset=ISO-8859-1");
-       response.setHeader("Cache-Control", "no-cache");
-   
+            throws ServletException, IOException {    
         HttpSession session = request.getSession();
-
-        JSONObject global = new JSONObject();
-        JSONArray arrayoffre = new JSONArray();
+         //Recuperer les pseudonymes du formulaires de connexion
+        String pseudonyme = request.getParameter("pseudonyme");
+        String motdepasse = request.getParameter("motdepasse");
+        Diffuseur diffuseur = null;
         
-        //On récupère le candidat en session 
-        Candidat candidat = (Candidat)session.getAttribute("CandidatObject");
-        String connecterOk = (String)session.getAttribute("Connecter");
-        
-        // si le candidat existe et qu'il est connecté
-        if(candidat != null && connecterOk != null){
-                
-        JSONObject infoAuth = new JSONObject();
-            
-            //je retourne les infomations du candidat connecté
-            infoAuth.put("Nom", candidat.getNom());
-            infoAuth.put("Prenom", candidat.getPrenom());
-            infoAuth.put("connecter", connecterOk);
-            
-            global.put("infoauth", infoAuth);
-        
-        }else{
-            
-            JSONObject infoAuth = new JSONObject();
-            infoAuth.put("connecter", "false");
-            
-            global.put("infoauth", infoAuth);
-            
-       
-        };
-        
-        //onrecupère les dix dernières offres en BDD
-        for (Offre offre : offreDAO.Lister10()) {
-            
-            //On retourne ses offres 
-            JSONObject object = new JSONObject();
-            object.put("Identifiant", offre.getIdentifiant());
-            object.put("Intitule", offre.getLibelle());
-            object.put("Reference", offre.getReference());
-            object.put("DateDebutContrat", offre.getDateDebutContrat().toString());
-            object.put("NombresPoste", offre.getNbPoste());
-            object.put("VilleEntreprise", offre.getClient().getVilleEntreprise());
-            
-            
-            arrayoffre.add(object);
-            
+        Boolean diffuseurOk = false;
+        //Recherche un compte correspondant au pseudonyme et mot de passe 
+        Compte compte = compteDAO.authentification(pseudonyme, motdepasse);
+        //Si il y a un compte
+        if( compte != null){
+        //Verifier que ce compte correspond à un candidat
+         diffuseur = diffuseurDAO.trouverparIDCompte(compte.getIdentifiant());
+            if(diffuseur != null ){
+                diffuseurOk = true;
+            }  
         }
-        global.put("offres", arrayoffre);
+        if (compte != null && diffuseurOk == true ) {
+            //Ajouter les informations du candidat en session
+            session.setAttribute("DiffuseurObject", diffuseur);
+            session.setAttribute("ConnecterDiffuseur", "true");
+
+            RequestDispatcher rq = request.getRequestDispatcher("flux.html");
+            rq.forward(request, response);
+
+        } else{
+            
+            RequestDispatcher rq = request.getRequestDispatcher("authentificationDiffuseur.html");
+            rq.forward(request, response);
+            session.setAttribute("ConnecterDiffuseur", "false");
         
-        
-        try (PrintWriter out = response.getWriter()) {          
-            out.println(global.toString());
         }
     }
 

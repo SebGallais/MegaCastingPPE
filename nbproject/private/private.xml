@@ -4,19 +4,27 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/web/inscription.html</file>
+            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/megacasting_ppe/dao/CandidatOffreDAO.java</file>
+            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/megacasting_ppe/classes/CandidatOffre.java</file>
             <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/megacasting_ppe/dao/diffuseurDAO.java</file>
-            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/com/megacasting_ppe/web/ServletInscriptionCandidat.java</file>
-            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/megacasting_ppe/dao/compteDAO.java</file>
+            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/com/megacasting_ppe/web/ServletOffresLibelle.java</file>
+            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/com/megacasting_ppe/web/ServletDeconnexion.java</file>
             <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/megacasting_ppe/dao/candidatDAO.java</file>
+            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/com/megacasting_ppe/web/ServletInscriptionCandidat.java</file>
             <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/megacasting_ppe/dao/offreDAO.java</file>
+            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/com/megacasting_ppe/web/ServletAuthentificationDiffuseur.java</file>
             <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/web/style.css</file>
             <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/web/index.html</file>
             <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/com/megacasting_ppe/web/ServletOffre.java</file>
+            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/megacasting_ppe/classes/Offre.java</file>
+            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/web/js/ajax.js</file>
             <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/com/megacasting_ppe/web/ServletAuthentification.java</file>
             <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/web/offres.html</file>
-            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/web/authentification.html</file>
+            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/megacasting_ppe/classes/Candidat.java</file>
+            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/com/megacasting_ppe/web/ServletCandidater.java</file>
+            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/com/megacasting_ppe/web/ServletOffreForDiffuseur.java</file>
             <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/web/offre.html</file>
-            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/megacasting_ppe/dao/clientDAO.java</file>
+            <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/com/megacasting_ppe/web/ServletLoadOffreView.java</file>
             <file>file:/C:/Users/Seb/Documents/NetBeansProjects/MegaCastingPPE/src/java/com/megacasting_ppe/web/ServletOffres.java</file>
         </group>
     </open-files>

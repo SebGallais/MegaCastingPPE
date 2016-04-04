@@ -7,6 +7,9 @@ package com.megacasting_ppe.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +25,7 @@ import org.json.simple.JSONObject;
  *
  * @author Seb
  */
-@WebServlet(name = "ServletOffresLibelle", urlPatterns = {"/servletoffreslibelles"})
+@WebServlet(name = "ServletOffresLibelle", urlPatterns = {"/servletoffreslibelle"})
 public class ServletOffresLibelle extends HttpServlet {
 
     /**
@@ -36,45 +39,49 @@ public class ServletOffresLibelle extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       response.setContentType("application/json");
-       
-        String Libelle = request.getParameter("libelle_offre");
-       
+
+        //on récupère la valeur recupéré du moteur de recherche.
+        String Libelle = request.getParameter("libelle_recherche");
+   
         HttpSession session = request.getSession();
 
         JSONObject global = new JSONObject();
         JSONArray arrayoffre = new JSONArray();
         
-        for (Offre offre : offreDAO.ListerLibelle(Libelle)) {
+        ArrayList<Offre> listOffresSearch = new ArrayList();
+       for (Offre offre : offreDAO.Lister()) {
+           
+           if(recherche(offre.getLibelle(), Libelle ) > 0 ){
+               
+               listOffresSearch.add(offre);
+               
+               
+           }
+  
+       }
+        
+        
+        for (Offre offre : listOffresSearch) {
 
             JSONObject object = new JSONObject();
+            object.put("Identifiant", offre.getIdentifiant());
             object.put("Intitule", offre.getLibelle());
             object.put("Reference", offre.getReference());
-            object.put("DateDebutPublication", offre.getDateDebutPublication());
-            object.put("DateFinPublication", offre.getDateFinPublication());
-            object.put("DateDebutContrat", offre.getDateDebutContrat());
-            object.put("DateFinContrat", offre.getDateFinContrat());
-            object.put("DescriptionPoste", offre.getDescriptionPoste());
-            object.put("DescriptionProfil", offre.getDescriptionProfil());
+            object.put("DateDebutContrat", offre.getDateDebutContrat().toString());
             object.put("NombresPoste", offre.getNbPoste());
-            object.put("NomEntreprise",offre.getClient().getNomEntreprise());
-            object.put("NomResponsable", offre.getClient().getNomResponsable());
-            object.put("PrenomResponsable", offre.getClient().getPrenomResponsable());
-            object.put("CiviliteResponsable", offre.getClient().getCiviliteResponsable());
-            object.put("RueEntreprise",offre.getClient().getRueEntreprise());
-            object.put("CpEntreprise", offre.getClient().getCpEntreprise());
             object.put("VilleEntreprise", offre.getClient().getVilleEntreprise());
-            object.put("MailEntreprise", offre.getClient().getMailEntreprise());
-            object.put("FaxEntreprise",offre.getClient().getFaxEntreprise());
-            object.put("TelephoneEntreprise",offre.getClient().getTelephoneEntreprise());
-            
             arrayoffre.add(object);
             
         }
         global.put("offres", arrayoffre);
-        try (PrintWriter out = response.getWriter()) {          
-            out.println(global.toString());
-        }
+        global.put("container_search", Libelle);
+      session.setAttribute("offres_lib", global);
+        
+       RequestDispatcher rq = request.getRequestDispatcher("offres.html");
+            rq.forward(request, response);
+      
+
+ 
        
     }
 
@@ -117,4 +124,19 @@ public class ServletOffresLibelle extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
+    
+    
+    
+    public static int recherche(String texte, String keyword) 
+    {
+      int count = 0;
+      int index = texte.indexOf(keyword);
+      while (index != -1)
+             {
+        ++count;
+        index = texte.indexOf(keyword, index + 1); 
+      }
+      
+      return count;
+    }
 }

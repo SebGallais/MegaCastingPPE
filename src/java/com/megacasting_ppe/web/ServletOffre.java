@@ -12,7 +12,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import megacasting_ppe.classes.Candidat;
 import megacasting_ppe.classes.Offre;
+import megacasting_ppe.dao.CandidatOffreDAO;
 import megacasting_ppe.dao.offreDAO;
 import org.json.simple.JSONObject;
 
@@ -35,19 +38,64 @@ public class ServletOffre extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
        response.setContentType("application/json");
-
+       response.setHeader("Cache-Control", "no-cache");
+       JSONObject object = new JSONObject();
+       
+        //On récupère en paramètre l'identifiant de l'offre
         long IdOffreTemp = Long.parseLong(request.getParameter("identifiant_offre"));
+        
+        //on récupère l'offre en BDD
         Offre offre = offreDAO.trouverParId(IdOffreTemp);
         
+        //on récupère en BDD
+        HttpSession session = request.getSession();
+        Candidat candidat = (Candidat)session.getAttribute("CandidatObject");
+        String connecterOk = (String)session.getAttribute("Connecter");
         
-        JSONObject object = new JSONObject();
+        JSONObject infoAuth = new JSONObject();
         
+        //on vérifie si l'offre a déja été candidaté par le candidat
+        if(CandidatOffreDAO.trouver(candidat, offre) != null ){
+            //si oui on envoie dans le fichier json CandidatOk à true 
+            infoAuth.put("CandidaterOk", "true");
+
+        }else{
+            //si non on envoie dans le fichier json CandidatOk à false 
+            infoAuth.put("CandidaterOk", "false");
+        }
+        
+        //si il ya un candidat de connecter , on retourne les informations du candidat
+        if(candidat != null && connecterOk != null){
+                
+            
+            infoAuth.put("Nom", candidat.getNom());
+            infoAuth.put("Prenom", candidat.getPrenom());
+            infoAuth.put("connecter", connecterOk);
+            object.put("infoauth", infoAuth);
+        
+        }else{
+            
+            
+            infoAuth.put("connecter", "false");
+            object.put("infoauth", infoAuth);
+            
+       
+        };
+        //Par défaut il n'y a pas de fin de contrat, dans le cas si l'offre proposé est un CDI
+        String datefincontrat = "Aucune date";
+        if(offre.getDateFinContrat() != null){
+            
+             datefincontrat = offre.getDateFinContrat().toString();
+             
+        }
+            //on retourne les informations de l'offre
+            object.put("Identifiant", offre.getIdentifiant());
             object.put("Intitule", offre.getLibelle());
             object.put("Reference", offre.getReference());
-            object.put("DateDebutPublication", offre.getDateDebutPublication());
-            object.put("DateFinPublication", offre.getDateFinPublication());
-            object.put("DateDebutContrat", offre.getDateDebutContrat());
-            object.put("DateFinContrat", offre.getDateFinContrat());
+            object.put("DateDebutPublication", offre.getDateDebutPublication().toString());
+            object.put("DateFinPublication", offre.getDateFinPublication().toString());
+            object.put("DateDebutContrat", offre.getDateDebutContrat().toString());
+            object.put("DateFinContrat", datefincontrat);
             object.put("DescriptionPoste", offre.getDescriptionPoste());
             object.put("DescriptionProfil", offre.getDescriptionProfil());
             object.put("NombresPoste", offre.getNbPoste());
@@ -61,6 +109,16 @@ public class ServletOffre extends HttpServlet {
             object.put("MailEntreprise", offre.getClient().getMailEntreprise());
             object.put("FaxEntreprise",offre.getClient().getFaxEntreprise());
             object.put("TelephoneEntreprise",offre.getClient().getTelephoneEntreprise()); 
+            object.put("Metier", offre.getMetier().getLibelle());
+            object.put("Contrat", offre.getContrat().getLibelle());
+            
+            
+            try (PrintWriter out = response.getWriter()) {
+            out.println(object.toJSONString());
+        }
+            
+            
+            
             
     }
 

@@ -26,7 +26,7 @@ public class diffuseurDAO {
         try {
 
             stmt = getINSTANCE().createStatement();
-            ResultSet rs = stmt.executeQuery("SELEC, Identifiant, NomEntreprise, IdentifiantCompte FROM diffuseur WHERE IdentifiantCompte = '" + IdentifiantTemp + "'");
+            ResultSet rs = stmt.executeQuery("SELECT Identifiant, NomEntreprise, IdentifiantCompte FROM diffuseur WHERE IdentifiantCompte = '" + IdentifiantTemp + "'");
 
             while (rs.next()) {
 

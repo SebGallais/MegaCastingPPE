@@ -23,6 +23,11 @@ span.glyphicon-user {
     color:#6699FF
 }
 
+span.glyphicon-briefcase {
+    font-size: 300%;
+    color:#6699FF
+}
+
 span.glyphicon-search {
     font-size: 200%;
     color:#6699FF
@@ -103,6 +108,16 @@ span.glyphicon-search {
 
 #titreoffres{
     text-align:center;
+    
+    
+    
+}
+
+#bonjour{
+    
+    font-family:laton,sans-serif;
+    font-size:medium;
+    font-weight: bold;
     
     
     

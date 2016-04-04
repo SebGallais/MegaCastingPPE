@@ -41,13 +41,19 @@ public class ServletInscriptionCandidat extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        //on récupère toutes les valeurs du formulaire 
         String Nom = request.getParameter("nom_inscription");
         String Prenom = request.getParameter("prenom_inscription");
         String Email = request.getParameter("email_inscription");
         String Telephone = request.getParameter("telephone_inscription");
         String Portable = request.getParameter("portable_inscription");
         String Rue = request.getParameter("rue_inscription");
-        int CodePostal = Integer.parseInt(request.getParameter("codepostal_inscription"));
+        int CodePostal = 0;
+        if (request.getParameter("codepostal_inscription") != "")
+        {
+          CodePostal = Integer.parseInt(request.getParameter("codepostal_inscription"));  
+        }
+         
         String Ville = request.getParameter("ville_inscription");
         String DateNaissanceString = request.getParameter("datenaissance_inscription");
         String Permis = request.getParameter("permis_inscription");
@@ -56,21 +62,19 @@ public class ServletInscriptionCandidat extends HttpServlet {
         try
         {
             
-            SimpleDateFormat typeFormat = new SimpleDateFormat( "dd/MM/yyyy" );
-            java.util.Date UtilDateNaissance = typeFormat.parse(DateNaissanceString);
-            java.sql.Date DateNaissance =  new java.sql.Date(UtilDateNaissance.getTime());
+            
         
                 HttpSession session = request.getSession();
                 boolean Inscription_ok = true;
-                //TEST      
-
-                if (Nom == "" || Prenom == "" || Email == "" || Telephone == "" || Portable == "" || Rue == "" || Ville == "" || DateNaissanceString == "" || Permis == "" || Pseudonyme == "" || MotDePasse == "") {
+                //   Vérifier si les valeurs  du formulaire ne sont pas vides    
+                if (Nom == "" || Prenom == "" || Email == "" || Telephone == "" || Portable == "" || Rue == "" || Ville == "" || DateNaissanceString == "" || Permis == "" || Pseudonyme == "" || MotDePasse == "" || CodePostal == 0) {
                     Inscription_ok = false;
                 }
+                //   Vérifier si les valeurs  du formulaire ne sont pas nulle
                 if (Nom == null || Prenom == null || Email == null || Telephone == null || Portable == null || Rue == null || Ville == null || DateNaissanceString == null || Permis == null|| Pseudonyme == null || MotDePasse == null ) {
                     Inscription_ok = false;
                 }
-
+                //Vérifier si le compte n'existe pas 
                 if (compteDAO.trouverparPseudonyme(Pseudonyme) != null) {
                     Inscription_ok = false;
                 }
@@ -78,11 +82,16 @@ public class ServletInscriptionCandidat extends HttpServlet {
                 if (Inscription_ok == true) {
                     //declarer aucun message d'erreur
                     session.setAttribute("ErreurInscriptionCandidat", "false");
-
-
+                    
+                    SimpleDateFormat typeFormat = new SimpleDateFormat( "dd/MM/yyyy" );
+                    java.util.Date UtilDateNaissance = typeFormat.parse(DateNaissanceString);
+                    java.sql.Date DateNaissance =  new java.sql.Date(UtilDateNaissance.getTime());
+                    
+                    //Créer le compte en BDD
                     Compte compte = new Compte(Pseudonyme, MotDePasse);
                     compteDAO.Creer(compte);
-
+                    
+                    //Créer un candidat en BDD
                     Candidat candidat = new Candidat(Nom, Prenom, Email, Telephone, Portable, Rue, CodePostal, Ville, DateNaissance, Permis, compte );
                     candidatDAO.Creer(candidat);
 

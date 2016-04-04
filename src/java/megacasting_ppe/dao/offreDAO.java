@@ -79,7 +79,7 @@ public class offreDAO {
         try {
 
             stmt = getINSTANCE().createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT Identifiant, Libelle, Reference, DateDebutPublication, DateFinPublication`, DateDebutContrat, DateFinContrat, DescriptionPoste, DescriptionProfil, NombresPoste, IdentifiantClient, IdentifiantMetier, IdentifiantContrat  FROM offre WHERE Identifiant = '" + IdentifiantTemp + "'");
+            ResultSet rs = stmt.executeQuery("SELECT Identifiant, Libelle, Reference, DateDebutPublication, DateFinPublication, DateDebutContrat, DateFinContrat, DescriptionPoste, DescriptionProfil, NombresPoste, IdentifiantClient, IdentifiantMetier, IdentifiantContrat  FROM offre WHERE Identifiant = '" + IdentifiantTemp + "'");
 
             while (rs.next()) {
 
@@ -121,12 +121,57 @@ public class offreDAO {
         return offre;
     }
 
-    public static ArrayList<Offre> Lister() {
+    public static ArrayList<Offre> Lister10() {
         ArrayList<Offre> ListOffre = new ArrayList();
         Statement stmt = null;
         try {
             stmt = getINSTANCE().createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT Identifiant, Libelle, Reference, DateDebutPublication, DateFinPublication`, DateDebutContrat, DateFinContrat, DescriptionPoste, DescriptionProfil, NombresPoste, IdentifiantClient, IdentifiantMetier, IdentifiantContrat   FROM Offre ");
+            ResultSet rs = stmt.executeQuery("SELECT  Identifiant, Libelle, Reference, DateDebutPublication, DateFinPublication, DateDebutContrat, DateFinContrat, DescriptionPoste, DescriptionProfil, NombresPoste, IdentifiantClient, IdentifiantMetier, IdentifiantContrat   FROM offre ORDER BY Identifiant DESC LIMIT 0, 10");
+            while (rs.next()) {
+                long Identifiant = rs.getLong("Identifiant");
+                String Libelle = rs.getString("Libelle");
+                String Reference = rs.getString("Reference");
+                Date DateDebutPublication = rs.getDate("DateDebutPublication");
+                Date DateFinPublication = rs.getDate("DateFinPublication");
+                Date DateDebutContrat = rs.getDate("DateDebutContrat");
+                Date DateFinContrat = rs.getDate("DateFinContrat");
+                String DescriptionPoste = rs.getString("DescriptionPoste");
+                String DescriptionProfil = rs.getString("DescriptionProfil");
+                int NombresPoste = rs.getInt("NombresPoste");
+                long IdentifiantClient = rs.getLong("IdentifiantClient");
+                Client client = clientDAO.trouverparID(IdentifiantClient);
+                long IdentifiantMetier = rs.getLong("IdentifiantMetier");
+                Metier metier = metierDAO.trouverparID(IdentifiantMetier);
+                long IdentifiantContrat = rs.getLong("IdentifiantContrat");
+                Contrat contrat = contratDAO.trouverparID(IdentifiantContrat);
+
+                Offre offre = new Offre(Libelle, Reference, DateDebutPublication, DateFinPublication, DateDebutContrat, DateFinContrat, client, metier, contrat);
+                offre.setIdentifiant(Identifiant);
+                offre.setDescriptionPoste(DescriptionPoste);
+                offre.setDescriptionProfil(DescriptionProfil);
+                offre.setNbPoste(NombresPoste);
+                ListOffre.add(offre);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                }
+            }
+        }
+
+        return ListOffre;
+    }
+public static ArrayList<Offre> Lister() {
+        ArrayList<Offre> ListOffre = new ArrayList();
+        Statement stmt = null;
+        try {
+            stmt = getINSTANCE().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT  Identifiant, Libelle, Reference, DateDebutPublication, DateFinPublication, DateDebutContrat, DateFinContrat, DescriptionPoste, DescriptionProfil, NombresPoste, IdentifiantClient, IdentifiantMetier, IdentifiantContrat   FROM offre");
             while (rs.next()) {
                 long Identifiant = rs.getLong("Identifiant");
                 String Libelle = rs.getString("Libelle");
@@ -172,7 +217,53 @@ public class offreDAO {
         Statement stmt = null;
         try {
             stmt = getINSTANCE().createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT Identifiant, Libelle, Reference, DateDebutPublication, DateFinPublication`, DateDebutContrat, DateFinContrat, DescriptionPoste, DescriptionProfil, NombresPoste, IdentifiantClient, IdentifiantMetier, IdentifiantContrat   FROM Offre WHERE Libelle = '"+ LibelleTemp + "'");
+            ResultSet rs = stmt.executeQuery("SELECT  Identifiant, Libelle, Reference, DateDebutPublication, DateFinPublication, DateDebutContrat, DateFinContrat, DescriptionPoste, DescriptionProfil, NombresPoste, IdentifiantClient, IdentifiantMetier, IdentifiantContrat   FROM Offre WHERE Libelle = '"+ LibelleTemp + "'");
+            while (rs.next()) {
+                long Identifiant = rs.getLong("Identifiant");
+                String Libelle = rs.getString("Libelle");
+                String Reference = rs.getString("Reference");
+                Date DateDebutPublication = rs.getDate("DateDebutPublication");
+                Date DateFinPublication = rs.getDate("DateFinPublication");
+                Date DateDebutContrat = rs.getDate("DateDebutContrat");
+                Date DateFinContrat = rs.getDate("DateFinContrat");
+                String DescriptionPoste = rs.getString("DescriptionPoste");
+                String DescriptionProfil = rs.getString("DescriptionProfil");
+                int NombresPoste = rs.getInt("NombresPoste");
+                long IdentifiantClient = rs.getLong("IdentifiantClient");
+                Client client = clientDAO.trouverparID(IdentifiantClient);
+                long IdentifiantMetier = rs.getLong("IdentifiantMetier");
+                Metier metier = metierDAO.trouverparID(IdentifiantMetier);
+                long IdentifiantContrat = rs.getLong("IdentifiantContrat");
+                Contrat contrat = contratDAO.trouverparID(IdentifiantContrat);
+
+                Offre offre = new Offre(Libelle, Reference, DateDebutPublication, DateFinPublication, DateDebutContrat, DateFinContrat, client, metier, contrat);
+                offre.setIdentifiant(Identifiant);
+                offre.setDescriptionPoste(DescriptionPoste);
+                offre.setDescriptionProfil(DescriptionProfil);
+                offre.setNbPoste(NombresPoste);
+                ListOffre.add(offre);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                }
+            }
+        }
+
+        return ListOffre;
+    }
+    
+    public static ArrayList<Offre> ListerCDD() {
+        ArrayList<Offre> ListOffre = new ArrayList();
+        Statement stmt = null;
+        try {
+            stmt = getINSTANCE().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT Identifiant, Libelle, Reference, DateDebutPublication, DateFinPublication, DateDebutContrat, DateFinContrat, DescriptionPoste, DescriptionProfil, NombresPoste, IdentifiantClient, IdentifiantMetier, IdentifiantContrat   FROM Offre WHERE IdentifiantContrat = 1");
             while (rs.next()) {
                 long Identifiant = rs.getLong("Identifiant");
                 String Libelle = rs.getString("Libelle");
@@ -214,4 +305,49 @@ public class offreDAO {
     }
     
     
+     public static ArrayList<Offre> ListerCDI() {
+        ArrayList<Offre> ListOffre = new ArrayList();
+        Statement stmt = null;
+        try {
+            stmt = getINSTANCE().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT Identifiant, Libelle, Reference, DateDebutPublication, DateFinPublication, DateDebutContrat, DateFinContrat, DescriptionPoste, DescriptionProfil, NombresPoste, IdentifiantClient, IdentifiantMetier, IdentifiantContrat   FROM Offre WHERE IdentifiantContrat = 2");
+            while (rs.next()) {
+                long Identifiant = rs.getLong("Identifiant");
+                String Libelle = rs.getString("Libelle");
+                String Reference = rs.getString("Reference");
+                Date DateDebutPublication = rs.getDate("DateDebutPublication");
+                Date DateFinPublication = rs.getDate("DateFinPublication");
+                Date DateDebutContrat = rs.getDate("DateDebutContrat");
+                Date DateFinContrat = rs.getDate("DateFinContrat");
+                String DescriptionPoste = rs.getString("DescriptionPoste");
+                String DescriptionProfil = rs.getString("DescriptionProfil");
+                int NombresPoste = rs.getInt("NombresPoste");
+                long IdentifiantClient = rs.getLong("IdentifiantClient");
+                Client client = clientDAO.trouverparID(IdentifiantClient);
+                long IdentifiantMetier = rs.getLong("IdentifiantMetier");
+                Metier metier = metierDAO.trouverparID(IdentifiantMetier);
+                long IdentifiantContrat = rs.getLong("IdentifiantContrat");
+                Contrat contrat = contratDAO.trouverparID(IdentifiantContrat);
+
+                Offre offre = new Offre(Libelle, Reference, DateDebutPublication, DateFinPublication, DateDebutContrat, DateFinContrat, client, metier, contrat);
+                offre.setIdentifiant(Identifiant);
+                offre.setDescriptionPoste(DescriptionPoste);
+                offre.setDescriptionProfil(DescriptionProfil);
+                offre.setNbPoste(NombresPoste);
+                ListOffre.add(offre);
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                }
+            }
+        }
+
+        return ListOffre;
+    }
 }

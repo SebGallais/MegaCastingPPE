@@ -162,4 +162,48 @@ public class candidatDAO {
         return candidat;
    
     }
+    
+    
+     public static Candidat trouverparID(long IdentifiantTemp) {
+        Statement stmt = null;
+        Candidat candidat = null;
+        try {
+
+            stmt = getINSTANCE().createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT Identifiant, Nom, Prenom, Email, Telephone, Portable, Rue, CP, Ville, DateNaissance, Permis, IdentifiantCompte FROM candidat WHERE Identifiant = '" + IdentifiantTemp + "'");
+
+            while (rs.next()) {
+
+                long Identifiant = rs.getLong("Identifiant");
+                String Nom = rs.getString("Nom");
+                String Prenom = rs.getString("Prenom");
+                String Email = rs.getString("Email");
+                String Telephone = rs.getString("Telephone");
+                String Portable = rs.getString("Portable");
+                String Rue = rs.getString("Rue");
+                int CP = rs.getInt("CP");
+                String Ville = rs.getString("Ville");
+                Date DateNaissance = rs.getDate("DateNaissance");
+                String Permis = rs.getString("Permis");
+                long IdentifiantCompte = rs.getLong("IdentifiantCompte");
+                Compte compte = compteDAO.trouverparid(IdentifiantCompte);
+                
+                candidat = new Candidat( Nom, Prenom, Email, Telephone, Portable, Rue, CP, Ville, DateNaissance, Permis, compte);
+                candidat.setIdentifiant(Identifiant);
+                
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+
+            if (stmt != null) {
+                try {
+                    stmt.close();
+                } catch (SQLException ex) {
+                }
+            }
+        }
+        return candidat;
+   
+    }
 }

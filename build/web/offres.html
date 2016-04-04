@@ -4,21 +4,25 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="Expires" content="-1">
     <title>Megacasting</title>
     <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
+       <script src="/MegaCastingPPE/js/ajax.js"></script>
   </head>
-  <body>
+  <body onload="listoffrelib()">
       
       
       <div class="row" id='header'>
           <div class="col-md-7" ><a href="index.html"><img src="images/fond.jpg" alt="fond"  class="img-responsive" /></a> </div>
-        
-        
-        <div class="col-md-1" > <span class="glyphicon glyphicon-user"></span></br><a href="authentification.html" >Se connecter</a> </div>
-        <div class="col-md-1" > <span class="glyphicon glyphicon-user"></span></br><a href="inscription.html" >S'inscrire</a></div>
-        <div class="col-md-2" ><div class="well well-lg" id='buttonaccesdiff'>Accès Diffuseur</div></div>
+        <div id="authContainer">
+            <div class="col-md-1" > <span class="glyphicon glyphicon-user"></span></br><a href="authentification.html" >Se connecter</a> </div>
+            <div class="col-md-1" > <span class="glyphicon glyphicon-user"></span></br><a href="inscription.html" >S'inscrire</a></div>
+            
+        </div> 
+       
       </div> 
       <hr>
     
@@ -26,59 +30,18 @@
 
     </br>
     <div class="row" id="titreoffres">
-        <div class="col-md-12" id="titreoffre">Les offres correspondant à la recherche : "<b>blabla</b>"  </div>
+        <div class="col-md-12" id="titreoffre">Les offres correspondant à la recherche : ""  </div>
             
         
     </div>
     </br>
-    <div class="list-group">
-        <a href="offre.html" class="list-group-item ">
-            <h4 class="list-group-item-heading">Recherche acteur pour grand film</h4>
-            <p class="list-group-item-text"><b>Reference : </b>RF51236</p>
-            <p class="list-group-item-text"><b>Debut du contrat : </b>4/04/2016</p>
-            <p class="list-group-item-text"><b>Nombre de poste : </b>2</p>
-            <p class="list-group-item-text"><b>Ville : </b>Paris</p>
-        </a>
-        <a href="offre.html" class="list-group-item">
-            <h4 class="list-group-item-heading">Recherche chanteur amateur pour un concert</h4>
-            <p class="list-group-item-text"><b>Reference</b> : RF51236</p>
-            <p class="list-group-item-text"><b>Debut du contrat : </b>4/04/2016</p>
-            <p class="list-group-item-text"><b>Nombre de poste : </b>1</p>
-            <p class="list-group-item-text"><b>Ville</b> : Lyon</p>
-        </a>
-        <a href="offre.html" class="list-group-item">
-            <h4 class="list-group-item-heading">Recherche clowns pour cirque</h4>
-            <p class="list-group-item-text"><b>Reference</b> : RF51236</p>
-            <p class="list-group-item-text"><b>Debut du contrat : </b>4/04/2016</p>
-            <p class="list-group-item-text"><b>Nombre de poste : </b>5</p>
-            <p class="list-group-item-text"><b>Ville</b> : Laval</p>
-        </a>
-              <a href="offre.html" class="list-group-item ">
-            <h4 class="list-group-item-heading">Recherche acteur pour grand film</h4>
-            <p class="list-group-item-text"><b>Reference : </b>RF51236</p>
-            <p class="list-group-item-text"><b>Debut du contrat : </b>4/04/2016</p>
-            <p class="list-group-item-text"><b>Nombres de poste : </b>2</p>
-            <p class="list-group-item-text"><b>Ville : </b>Paris</p>
-        </a>
-        <a href="offre.html" class="list-group-item">
-            <h4 class="list-group-item-heading">Recherche chanteur amateur pour un concert</h4>
-            <p class="list-group-item-text"><b>Reference</b> : RF51236</p>
-            <p class="list-group-item-text"><b>Debut du contrat : </b>4/04/2016</p>
-            <p class="list-group-item-text"><b>Nombre de poste : </b>1</p>
-            <p class="list-group-item-text"><b>Ville</b> : Lyon</p>
-        </a>
-        <a href="offre.html" class="list-group-item">
-            <h4 class="list-group-item-heading">Recherche clowns pour cirque</h4>
-            <p class="list-group-item-text"><b>Reference</b> : RF51236</p>
-            <p class="list-group-item-text"><b>Debut du contrat : </b>4/04/2016</p>
-            <p class="list-group-item-text"><b>Nombre de poste : </b>5</p>
-            <p class="list-group-item-text"><b>Ville</b> : Laval</p>
-        </a>
+    <div class="list-group" id="listgroup">
+       
     </div>
 </div>
     <!--jquery javascript -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="boootstrap/js/bootstrap.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>
 

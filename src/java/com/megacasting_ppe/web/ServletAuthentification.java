@@ -39,38 +39,44 @@ public class ServletAuthentification extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          
+        response.setHeader("Cache-Control", "no-cache");
         HttpSession session = request.getSession();
+        //Recuperer les pseudonymes du formulaires de connexion
         String pseudonyme = request.getParameter("pseudonyme");
         String motdepasse = request.getParameter("motdepasse");
+        session.setAttribute("ErrorAuth", false);
         
         Boolean candidatOk = false;
+        //Recherche un compte correspondant au pseudonyme et mot de passe 
         Compte compte = compteDAO.authentification(pseudonyme, motdepasse);
-        Candidat candidat = candidatDAO.trouverparIDCompte(compte.getIdentifiant());
         
+        //Si il y a un compte
+        if( compte != null){
+        //Verifier que ce compte correspond à un candidat
+        Candidat candidat = candidatDAO.trouverparIDCompte(compte.getIdentifiant());
         if(candidat != null ){
             candidatOk = true;
-    
+                if (compte != null && candidatOk == true ) {
+                    //Ajouter les informations du candidat en session
+                    session.setAttribute("CandidatObject", candidat);
+                    session.setAttribute("Connecter", "true");
+                    RequestDispatcher rq = request.getRequestDispatcher("index.html");
+                    rq.forward(request, response);
+
+                }
+                }else{
+                    session.setAttribute("Connecter", "false");
+                    RequestDispatcher rq = request.getRequestDispatcher("authentification.html");
+                    rq.forward(request, response);
+                }
+   
         }
         
         
-        
-        
-        if (compte != null && candidatOk == true ) {
-          
-                
-                session.setAttribute("CompteObject", compte);
-                session.setAttribute("Connecter", true);
-                
-                RequestDispatcher rq = request.getRequestDispatcher("index.html");
-                rq.forward(request, response);
-
-        } else {
-            
+         else {
+            session.setAttribute("Connecter", "false");
             RequestDispatcher rq = request.getRequestDispatcher("authentification.html");
             rq.forward(request, response);
-            session.setAttribute("Connecter", false);
-        
         }
     }
 

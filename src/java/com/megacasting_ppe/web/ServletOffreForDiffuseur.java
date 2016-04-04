@@ -12,8 +12,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import megacasting_ppe.classes.Candidat;
 import megacasting_ppe.classes.Offre;
 import megacasting_ppe.dao.offreDAO;
 import org.json.simple.JSONArray;
@@ -23,8 +21,8 @@ import org.json.simple.JSONObject;
  *
  * @author Seb
  */
-@WebServlet(name = "ServletOffres", urlPatterns = {"/servletoffres"})
-public class ServletOffres extends HttpServlet {
+@WebServlet(name = "ServletOffreForDiffuseur", urlPatterns = {"/offrefordiffuseur"})
+public class ServletOffreForDiffuseur extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,51 +35,44 @@ public class ServletOffres extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       response.setContentType("application/json;  charset=ISO-8859-1");
-       response.setHeader("Cache-Control", "no-cache");
-   
-        HttpSession session = request.getSession();
+         response.setContentType("application/json;  charset=ISO-8859-1" );
+         response.setHeader("Cache-Control", "no-cache");
+           JSONObject global = new JSONObject();
+           JSONArray arrayoffre = new JSONArray();
+         
+           //on récupère l'ensemble des offres de casting en BDD
+          for (Offre offre : offreDAO.Lister()) {
 
-        JSONObject global = new JSONObject();
-        JSONArray arrayoffre = new JSONArray();
-        
-        //On récupère le candidat en session 
-        Candidat candidat = (Candidat)session.getAttribute("CandidatObject");
-        String connecterOk = (String)session.getAttribute("Connecter");
-        
-        // si le candidat existe et qu'il est connecté
-        if(candidat != null && connecterOk != null){
-                
-        JSONObject infoAuth = new JSONObject();
-            
-            //je retourne les infomations du candidat connecté
-            infoAuth.put("Nom", candidat.getNom());
-            infoAuth.put("Prenom", candidat.getPrenom());
-            infoAuth.put("connecter", connecterOk);
-            
-            global.put("infoauth", infoAuth);
-        
-        }else{
-            
-            JSONObject infoAuth = new JSONObject();
-            infoAuth.put("connecter", "false");
-            
-            global.put("infoauth", infoAuth);
-            
-       
-        };
-        
-        //onrecupère les dix dernières offres en BDD
-        for (Offre offre : offreDAO.Lister10()) {
-            
-            //On retourne ses offres 
-            JSONObject object = new JSONObject();
-            object.put("Identifiant", offre.getIdentifiant());
-            object.put("Intitule", offre.getLibelle());
-            object.put("Reference", offre.getReference());
-            object.put("DateDebutContrat", offre.getDateDebutContrat().toString());
-            object.put("NombresPoste", offre.getNbPoste());
-            object.put("VilleEntreprise", offre.getClient().getVilleEntreprise());
+                JSONObject object = new JSONObject();
+                //Par défaut il n'y a pas de fin de contrat, dans le cas si l'offre proposé est un CDI
+                String datefincontrat = "Aucune Date";
+                if(offre.getDateFinContrat() != null){
+
+                     datefincontrat = offre.getDateFinContrat().toString();
+
+                }
+                //on retourne les informations de l'offre
+                object.put("Intitule", offre.getLibelle());
+                object.put("Reference", offre.getReference());
+                object.put("DateDebutPublication", offre.getDateDebutPublication().toString());
+                object.put("DateFinPublication", offre.getDateFinPublication().toString());
+                object.put("DateDebutContrat", offre.getDateDebutContrat().toString());
+                object.put("DateFinContrat", datefincontrat);
+                object.put("DescriptionPoste", offre.getDescriptionPoste());
+                object.put("DescriptionProfil", offre.getDescriptionProfil());
+                object.put("NombresPoste", offre.getNbPoste());
+                object.put("NomEntreprise",offre.getClient().getNomEntreprise());
+                object.put("NomResponsable", offre.getClient().getNomResponsable());
+                object.put("PrenomResponsable", offre.getClient().getPrenomResponsable());
+                object.put("CiviliteResponsable", offre.getClient().getCiviliteResponsable());
+                object.put("RueEntreprise",offre.getClient().getRueEntreprise());
+                object.put("CpEntreprise", offre.getClient().getCpEntreprise());
+                object.put("VilleEntreprise", offre.getClient().getVilleEntreprise());
+                object.put("MailEntreprise", offre.getClient().getMailEntreprise());
+                object.put("FaxEntreprise",offre.getClient().getFaxEntreprise());
+                object.put("TelephoneEntreprise",offre.getClient().getTelephoneEntreprise()); 
+                object.put("Metier", offre.getMetier().getLibelle());
+                object.put("Contrat", offre.getContrat().getLibelle());
             
             
             arrayoffre.add(object);
@@ -93,6 +84,9 @@ public class ServletOffres extends HttpServlet {
         try (PrintWriter out = response.getWriter()) {          
             out.println(global.toString());
         }
+        
+        
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
